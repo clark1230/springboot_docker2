@@ -1,0 +1,36 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: springboot_docker
+spec:
+  selector:
+    app: springboot_docker
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 8099
+      targetPort: 8099
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot_docker
+  labels:
+    app: springboot_docker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: springboot_docker
+  template:
+    metadata:
+      labels:
+        app: springboot_docker
+    spec:
+      imagePullSecrets:
+      - name: pipeline-docker-registry
+      containers:
+      - name: maven
+        image: ${CICD_IMAGE}:${CICD_EXECUTION_SEQUENCE}
+        ports:
+        - containerPort: 8099

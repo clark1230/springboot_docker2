@@ -4,7 +4,7 @@ stages:
   - runScriptConfig:
       image: java:8
       shellScript: mvn clean install
-- name: 发布
+- name: publish
   steps:
   - publishImageConfig:
       dockerfilePath: ./Dockerfile
